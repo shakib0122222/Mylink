@@ -6,154 +6,335 @@
     <title>Viral Link</title>
     <style>
         :root {
-            --primary: #e91e63;
-            --primary-glow: #ff4081;
-            --bg-gradient: linear-gradient(135deg, #0d001a, #1a0026);
-            --card-bg: rgba(20, 0, 35, 0.6);
-            --neon-glow: 0 0 15px rgba(233, 30, 99, 0.6);
+            --primary: #ff006e;
+            --secondary: #8338ec;
+            --accent: #3a86ff;
+            --glow-primary: 0 0 40px rgba(255, 0, 110, 0.8);
+            --glass: rgba(20, 10, 50, 0.4);
+            --border-glow: 0 0 30px rgba(255, 0, 110, 0.6);
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', 'Arial', sans-serif;
-            background: var(--bg-gradient);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f001a, #1b0030);
             color: #fff;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
+            background-attachment: fixed;
         }
-        header {
-            text-align: center;
-            padding: 50px 20px 40px;
-            background: linear-gradient(to bottom, rgba(233,30,99,0.2), transparent);
-        }
-        .header-title {
-            font-size: 3.2em;
-            margin: 0;
-            font-weight: 800;
-            text-shadow: var(--neon-glow), 0 0 30px var(--primary);
-            letter-spacing: 4px;
-        }
-        .header-subtitle {
-            font-size: 1.6em;
-            margin: 15px 0 0;
-            opacity: 0.9;
-        }
-        .container {
-            flex: 1;
-            padding: 20px 10px 100px; /* extra bottom for nav */
+
+        /* হেডার আরও ছোট করা হয়েছে */
+        .header-container {
+            position: relative;
             max-width: 1400px;
             margin: 0 auto;
+            padding: 12px 15px; /* আগে 20px ছিল, এখন অনেক কম */
+            text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
+
+        .header-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,0,110,0.05) 10px, rgba(255,0,110,0.05) 20px);
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-glow {
+            font-size: 2.2em; /* আগে 2.8em, এখন ছোট */
+            margin-bottom: 4px;
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 15px #ff006e; }
+            to { text-shadow: 0 0 35px #ff006e; }
+        }
+
+        .header-title {
+            font-size: 2.1em; /* আগে 2.6em, এখন ছোট */
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff, #ff006e);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: hologram 8s ease infinite;
+            letter-spacing: 2px;
+            margin: 4px 0;
+        }
+
+        @keyframes hologram {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header-subtitle {
+            font-size: 1em; /* ছোট */
+            margin: 6px 0;
+            opacity: 0.9;
+        }
+
+        .age-warning {
+            font-size: 0.9em; /* আরও ছোট */
+            color: #ff79b0;
+            font-weight: bold;
+            text-shadow: var(--glow-primary);
+            margin-top: 2px;
+        }
+
+        /* সার্চ বার মোবাইলে ছোট */
+        .search-bar {
+            max-width: 90%;
+            margin: 15px auto; /* কম মার্জিন */
+            padding: 0 15px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px; /* কম প্যাডিং */
+            border-radius: 50px;
+            border: 3px solid transparent;
+            background: linear-gradient(#000, #000) padding-box,
+                        linear-gradient(90deg, #ff006e, #8338ec) border-box;
+            color: #fff;
+            font-size: 1em;
+            box-shadow: var(--glow-primary);
+            transition: all 0.4s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            box-shadow: 0 0 50px rgba(255,0,110,0.9);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 10px 120px; /* উপরে কম প্যাডিং */
+        }
+
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 0 10px;
         }
+
         .video-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: var(--neon-glow);
-            transition: all 0.4s ease;
-            border: 1px solid rgba(233,30,99,0.3);
+            box-shadow: var(--border-glow);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardEntry 0.8s ease forwards;
+            cursor: pointer;
         }
-        .video-card:hover {
+
+        @keyframes cardEntry {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .video-card:hover, .video-card:active {
             transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(233,30,99,0.8);
+            box-shadow: 0 15px 40px rgba(255,0,110,0.7);
         }
+
+        .thumbnail-wrapper {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 9 / 12;
+        }
+
         .video-thumbnail {
             width: 100%;
-            height: 240px;
+            height: 100%;
             object-fit: cover;
+            transition: transform 8s ease;
         }
+
+        .video-card:hover .video-thumbnail, .video-card:active .video-thumbnail {
+            transform: scale(1.2);
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3.5em;
+            color: rgba(255,255,255,0.9);
+            opacity: 0;
+            transition: all 0.4s;
+        }
+
+        .video-card:hover .play-icon, .video-card:active .play-icon {
+            opacity: 1;
+        }
+
+        .neon-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            padding: 3px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .video-card:hover .neon-border, .video-card:active .neon-border {
+            opacity: 1;
+        }
+
         .video-info {
             padding: 12px;
             text-align: center;
         }
+
         .video-title {
-            font-size: 1em;
-            margin: 0 0 10px;
-            font-weight: 600;
-            line-height: 1.2;
+            font-size: 0.95em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
+
+        .progress-bar {
+            height: 7px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff006e, #8338ec);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: width 0.8s ease;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
         .unlock-btn {
-            background: linear-gradient(45deg, var(--primary), var(--primary-glow));
+            background: linear-gradient(45deg, #ff006e, #8338ec);
             color: #fff;
             border: none;
-            padding: 10px 16px;
+            padding: 10px;
             border-radius: 30px;
             font-size: 0.95em;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            box-shadow: var(--neon-glow);
+            box-shadow: var(--glow-primary);
             transition: all 0.3s;
         }
-        .unlock-btn:hover {
+
+        .unlock-btn:hover, .unlock-btn:active {
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(233,30,99,0.9);
+            box-shadow: 0 12px 35px rgba(255,0,110,0.9);
         }
-        .progress-text {
-            font-size: 0.8em;
-            margin-top: 6px;
-            opacity: 0.8;
-        }
+
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 0, 20, 0.95);
-            backdrop-filter: blur(15px);
+            bottom: 0; left: 0; right: 0;
+            background: rgba(15,5,35,0.95);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0; /* smaller padding */
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.8);
+            padding: 10px 0;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+            border-top: 2px solid rgba(255,0,110,0.4);
             z-index: 1000;
         }
+
         .nav-item {
-            text-align: center;
-            color: #aaa;
-            font-size: 1.4em; /* smaller icons */
+            color: #ccc;
+            font-size: 1.5em;
             transition: all 0.3s;
+            text-align: center;
+            flex: 1;
         }
-        .nav-item.active, .nav-item:hover {
-            color: var(--primary);
-            transform: scale(1.2);
+
+        .nav-item.active, .nav-item:active {
+            color: #ff006e;
+            transform: scale(1.4);
+            text-shadow: var(--glow-primary);
         }
+
         .nav-item span {
+            font-size: 0.7em;
+            margin-top: 5px;
             display: block;
-            font-size: 0.65em; /* smaller text */
-            margin-top: 4px;
         }
+
+        /* মোবাইলের জন্য আরও অপটিমাইজড */
         @media (max-width: 480px) {
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            .video-thumbnail {
-                height: 200px;
-            }
-            .header-title {
-                font-size: 2.8em;
-            }
-            .unlock-btn {
-                padding: 12px;
-                font-size: 1em;
-            }
+            .header-container { padding: 10px 12px; border-radius: 0 0 20px 20px; }
+            .logo-glow { font-size: 2em; }
+            .header-title { font-size: 1.9em; letter-spacing: 1.5px; }
+            .header-subtitle { font-size: 0.95em; }
+            .age-warning { font-size: 0.85em; }
+            .search-bar { margin: 12px auto; }
+            .search-bar input { padding: 11px 18px; font-size: 0.95em; }
+            .video-grid { gap: 12px; }
+            .video-title { font-size: 0.9em; }
+            .unlock-btn { padding: 9px; font-size: 0.9em; }
+            .play-icon { font-size: 3em; }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .video-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (min-width: 769px) {
+            .video-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px; }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
+    <!-- ছোট হেডার -->
+    <div class="header-container">
+        <div class="logo-glow">🔥</div>
         <h1 class="header-title">Viral Link</h1>
-        <h2 class="header-subtitle">Exclusive Premium Videos</h2>
-    </header>
+        <h2 class="header-subtitle">Exclusive Premium Collection</h2>
+        <p class="age-warning">🔞 18+ Only • Ultra Private Content</p>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search hot videos...">
+    </div>
 
     <div class="container">
         <div class="video-grid" id="videoGrid"></div>
@@ -167,75 +348,88 @@
     </nav>
 
     <script>
-        const ADSTERRA_LINK = "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca"; // আপনার লিঙ্ক দিন
+        const ADSTERRA_LINK = "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca";
 
         const videos = [
-            {
-                thumbnail: "https://i.ibb.co/jPx9hvwQ/0327087b1279.jpg",
-                title: "নতুন ভিডিও ",
-                contentLink: "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca"
-            },
-            {
-                thumbnail: "https://i.ibb.co/QFvRQNX9/f0e30521d7d6.jpg",
-                title: "কেমন লাগে মামা",
-                contentLink: "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca"
-            },
-            {
-                thumbnail: "https://i.ibb.co/gZtJkX5y/ecfe56edf552.jpg",
-                title: "কি কাম টা করলো",
-                contentLink: "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca"
-            },
-            {
-                thumbnail: "https://i.postimg.cc/KjbGkzHG/image.png",
-                title: "নতুন মাল",
-                contentLink: "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca"
-            },
-            {
-                thumbnail: "https://i.postimg.cc/xCTNk6Js/image.png",
-                title: "সেই মামা",
-                contentLink: "https://elizarucksack.com/cmbvaee3u?key=bf8675cf9eb76067699073a47495c1ca"
-            }
+            { thumbnail: "https://i.ibb.co/QFvRQNX9/f0e30521d7d6.jpg", title: "কড়া মাল" },
+            { thumbnail: "https://i.ibb.co/jPx9hvwQ/0327087b1279.jpg", title: "নতুন ভিডিও" },
+            { thumbnail: "https://i.ibb.co/QFvRQNX9/f0e30521d7d6.jpg", title: "কেমন লাগে মামা" },
+            { thumbnail: "https://i.ibb.co/gZtJkX5y/ecfe56edf552.jpg", title: "কি কাম টা করলো" },
+            { thumbnail: "https://i.postimg.cc/KjbGkzHG/image.png", title: "নতুন মাল" },
+            { thumbnail: "https://i.postimg.cc/xCTNk6Js/image.png", title: "সেই মামা" },
         ];
 
         const videoGrid = document.getElementById('videoGrid');
 
-        videos.forEach((video, index) => {
+        function createCard(video, index) {
             const card = document.createElement('div');
             card.classList.add('video-card');
-
+            
             let count = parseInt(localStorage.getItem(`adCount_${index}`) || '0');
+            let progress = (count / 5) * 100;
+            let buttonText = count >= 5 ? 'Watch Now 🔥' : `Unlock (${count}/5 Ads)`;
 
             card.innerHTML = `
-                <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail" loading="lazy">
+                <div class="thumbnail-wrapper">
+                    <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail" loading="lazy">
+                    <i class="fas fa-play-circle play-icon"></i>
+                    <div class="neon-border"></div>
+                </div>
                 <div class="video-info">
                     <h3 class="video-title">${video.title}</h3>
-                    <button class="unlock-btn" data-index="${index}">Unlock (${count}/5 Ads)</button>
-                    <div class="progress-text">Watch ads to unlock</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <button class="unlock-btn" data-index="${index}">${buttonText}</button>
                 </div>
             `;
-            videoGrid.prepend(card);
+
+            card.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('unlock-btn')) {
+                    handleUnlock(index, card);
+                }
+            });
+
+            return card;
+        }
+
+        function handleUnlock(index, card) {
+            let count = parseInt(localStorage.getItem(`adCount_${index}`) || '0');
+            
+            if (count < 5) {
+                window.open(ADSTERRA_LINK, '_blank');
+                count++;
+                localStorage.setItem(`adCount_${index}`, count);
+                
+                const progress = (count / 5) * 100;
+                card.querySelector('.progress-fill').style.width = `${progress}%`;
+                card.querySelector('.unlock-btn').textContent = count >= 5 ? 'Watch Now 🔥' : `Unlock (${count}/5 Ads)`;
+            } else {
+                window.open(ADSTERRA_LINK, '_blank');
+            }
+        }
+
+        videos.forEach((video, index) => {
+            const card = createCard(video, index);
+            card.style.animationDelay = `${index * 0.1}s`;
+            videoGrid.appendChild(card);
         });
 
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('unlock-btn')) {
-                const index = e.target.getAttribute('data-index');
-                let count = parseInt(localStorage.getItem(`adCount_${index}`) || '0');
-
-                if (count < 5) {
-                    window.open(ADSTERRA_LINK, '_blank');
-                    count++;
-                    localStorage.setItem(`adCount_${index}`, count);
-                    e.target.textContent = `Unlock (${count}/5 Ads)`;
-                } else {
-                    window.open(videos[index].contentLink, '_blank');
-                }
+                e.stopPropagation();
+                const index = e.target.dataset.index;
+                const card = e.target.closest('.video-card');
+                handleUnlock(index, card);
             }
         });
 
-        document.querySelectorAll('.unlock-btn').forEach(btn => {
-            const index = btn.getAttribute('data-index');
-            const count = localStorage.getItem(`adCount_${index}`) || '0';
-            btn.textContent = `Unlock (${count}/5 Ads)`;
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.video-card').forEach(card => {
+                const title = card.querySelector('.video-title').textContent.toLowerCase();
+                card.style.display = title.includes(query) ? 'block' : 'none';
+            });
         });
     </script>
 
